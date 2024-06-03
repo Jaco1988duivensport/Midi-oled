@@ -5,16 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MIDI OLED Configurator</title>
     <style>
-        /* Voeg hier je CSS-stijlen toe */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
     <h1>MIDI OLED Configurator</h1>
     <form id="oledForm">
-        <label for="display1">Display 1:</label>
-        <input type="text" id="display1" name="display1" value=""><br>
-        <!-- Voeg hier meer invoervelden toe voor andere displays -->
-
+        <label for="displaySelect">Selecteer een display:</label>
+        <select id="displaySelect">
+            <option value="display1">Display 1</option>
+            <!-- Voeg hier meer opties toe voor andere displays -->
+        </select>
+        <label for="contentInput">Inhoud voor het display:</label>
+        <input type="text" id="contentInput" name="contentInput" value=""><br>
         <input type="submit" value="Update">
     </form>
 
@@ -48,6 +88,18 @@
             console.log('MIDI message received', message);
             // Voeg hier de verwerking van MIDI-berichten toe
         }
+
+        // Verwerk het formulier
+        const form = document.getElementById('oledForm');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const displaySelect = document.getElementById('displaySelect');
+            const selectedDisplay = displaySelect.options[displaySelect.selectedIndex].value;
+            const contentInput = document.getElementById('contentInput').value;
+            console.log('Geselecteerde display:', selectedDisplay);
+            console.log('Inhoud voor de display:', contentInput);
+            // Voeg hier de logica toe om de invoer naar de Arduino te sturen
+        });
     </script>
 </body>
 </html>
