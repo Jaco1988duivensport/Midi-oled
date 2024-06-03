@@ -1,46 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>MIDI Configurator</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIDI OLED Configurator</title>
+    <style>
+        /* Voeg hier je CSS-stijlen toe */
+    </style>
 </head>
 <body>
-  <h1>MIDI Configurator</h1>
-  <button id="connect">Connect to Arduino</button>
-  <br><br>
-  <label for="note">Note:</label>
-  <input type="number" id="note" value="60">
-  <label for="velocity">Velocity:</label>
-  <input type="number" id="velocity" value="127">
-  <button id="send">Send MIDI</button>
+    <h1>MIDI OLED Configurator</h1>
+    <form id="oledForm">
+        <label for="display1">Display 1:</label>
+        <input type="text" id="display1" name="display1" value=""><br>
+        <!-- Voeg hier meer invoervelden toe voor andere displays -->
 
-  <script>
-    let device;
+        <input type="submit" value="Update">
+    </form>
 
-    document.getElementById('connect').addEventListener('click', async () => {
-      try {
-        device = await navigator.usb.requestDevice({ filters: [{ vendorId: 0x2341 }] });
-        await device.open();
-        await device.selectConfiguration(1);
-        await device.claimInterface(0);
-        console.log('Device connected');
-      } catch (error) {
-        console.error('Error: ', error);
-      }
-    });
+    <script>
+        // JavaScript-code voor MIDI-communicatie
+        // Hier kun je MIDI-functionaliteit toevoegen
+        // Zie: https://webmidijs.org/docs/v1.2.5/index.html voor documentatie
 
-    document.getElementById('send').addEventListener('click', async () => {
-      if (device) {
-        const note = document.getElementById('note').value;
-        const velocity = document.getElementById('velocity').value;
-        const message = `note:${note} velocity:${velocity}\n`;
-        const encoder = new TextEncoder();
-        const data = encoder.encode(message);
-        await device.transferOut(4, data);
-        console.log('MIDI message sent');
-      } else {
-        console.error('No device connected');
-      }
-    });
-  </script>
+        // Voorbeeldcode:
+        if (navigator.requestMIDIAccess) {
+            console.log('Web MIDI is supported in this browser');
+            navigator.requestMIDIAccess()
+                .then(onMIDISuccess, onMIDIFailure);
+        } else {
+            console.log('Web MIDI is not supported in this browser');
+        }
+
+        function onMIDISuccess(midiAccess) {
+            console.log('MIDI access granted');
+            const inputs = midiAccess.inputs.values();
+            for (let input = inputs.next(); input && !input.done; input = inputs.next()) {
+                input.value.onmidimessage = getMIDIMessage;
+            }
+        }
+
+        function onMIDIFailure() {
+            console.log('MIDI access denied');
+        }
+
+        function getMIDIMessage(message) {
+            console.log('MIDI message received', message);
+            // Voeg hier de verwerking van MIDI-berichten toe
+        }
+    </script>
 </body>
 </html>
