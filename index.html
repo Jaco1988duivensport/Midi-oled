@@ -12,114 +12,79 @@
         h1 {
             text-align: center;
         }
-        form {
-            max-width: 500px;
-            margin: 0 auto;
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        input[type="text"], select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            box-sizing: border-box;
-        }
-        input[type="submit"] {
-            width: 100%;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        input[type="submit"]:hover {
-            background-color: #45a049;
-        }
-        .oled-block {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-        .oled-column {
-            flex: 1;
+        .tab {
+            overflow: hidden;
             border: 1px solid #ccc;
-            padding: 10px;
-            text-align: center;
+            background-color: #f1f1f1;
+        }
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+        }
+        .tab button:hover {
+            background-color: #ddd;
+        }
+        .tab button.active {
+            background-color: #ccc;
+        }
+        .tabcontent {
+            display: none;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-top: none;
         }
     </style>
 </head>
 <body>
     <h1>MIDI OLED Configurator</h1>
-    <form id="configForm">
-        <label for="arduinoSelect">Selecteer de aangesloten Arduino:</label>
-        <select id="arduinoSelect">
-            <option value="arduino1">Arduino 1</option>
-            <!-- Voeg hier meer opties toe voor andere Arduinos -->
-        </select>
+    
+    <div class="tab">
+        <button class="tablinks" onclick="openTab(event, 'config')">Configuratie</button>
+        <button class="tablinks" onclick="openTab(event, 'sampleSets')">Sample Sets</button>
+    </div>
+    
+    <div id="config" class="tabcontent">
+        <form id="configForm">
+            <label for="arduinoSelect">Selecteer de aangesloten Arduino:</label>
+            <select id="arduinoSelect">
+                <option value="arduino1">Arduino 1</option>
+                <!-- Voeg hier meer opties toe voor andere Arduinos -->
+            </select>
 
-        <label for="sampleSetSelect">Selecteer de orgel sample set:</label>
-        <select id="sampleSetSelect">
-            <option value="sampleSet1">Sample Set 1</option>
-            <!-- Voeg hier meer opties toe voor andere sample sets -->
-        </select>
+            <label for="sampleSetSelect">Selecteer de orgel sample set:</label>
+            <select id="sampleSetSelect">
+                <option value="sampleSet1">Sample Set 1</option>
+                <!-- Voeg hier meer opties toe voor andere sample sets -->
+            </select>
 
-        <input type="submit" value="Start">
-    </form>
+            <input type="submit" value="Start">
+        </form>
+    </div>
 
-    <div class="oled-block">
-        <div class="oled-column">
-            <!-- Hier worden de eerste 24 OLED-displays weergegeven -->
-        </div>
-        <div class="oled-column">
-            <!-- Hier worden de volgende 24 OLED-displays weergegeven -->
-        </div>
+    <div id="sampleSets" class="tabcontent">
+        <h2>Sample Sets Beheren</h2>
+        <!-- Hier kan de functionaliteit voor het beheren van sample sets worden toegevoegd -->
     </div>
 
     <script>
-        // JavaScript-code voor MIDI-communicatie
-        // Hier kun je MIDI-functionaliteit toevoegen
-        // Zie: https://webmidijs.org/docs/v1.2.5/index.html voor documentatie
-
-        // Voorbeeldcode:
-        if (navigator.requestMIDIAccess) {
-            console.log('Web MIDI is supported in this browser');
-            navigator.requestMIDIAccess()
-                .then(onMIDISuccess, onMIDIFailure);
-        } else {
-            console.log('Web MIDI is not supported in this browser');
-        }
-
-        function onMIDISuccess(midiAccess) {
-            console.log('MIDI access granted');
-            const inputs = midiAccess.inputs.values();
-            for (let input = inputs.next(); input && !input.done; input = inputs.next()) {
-                input.value.onmidimessage = getMIDIMessage;
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
             }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
         }
-
-        function onMIDIFailure() {
-            console.log('MIDI access denied');
-        }
-
-        function getMIDIMessage(message) {
-            console.log('MIDI message received', message);
-            // Voeg hier de verwerking van MIDI-berichten toe
-        }
-
-        // Verwerk het formulier
-        const form = document.getElementById('configForm');
-        form.addEventListener('submit', function(event) {
-            event.preventDefault();
-            const arduinoSelect = document.getElementById('arduinoSelect').value;
-            const sampleSetSelect = document.getElementById('sampleSetSelect').value;
-            console.log('Geselecteerde Arduino:', arduinoSelect);
-            console.log('Geselecteerde sample set:', sampleSetSelect);
-            // Voeg hier de logica toe om de geselecteerde Arduino en sample set te starten
-        });
     </script>
 </body>
 </html>
-
