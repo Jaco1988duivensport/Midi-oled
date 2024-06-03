@@ -7,19 +7,19 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            background-color: #f8f9fa;
             margin: 0;
             padding: 20px;
         }
         h1, h2 {
-            color: #333;
+            color: #343a40;
         }
         .container {
             background-color: #fff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
         }
         .form-group {
@@ -56,186 +56,193 @@
             padding: 8px;
             text-align: center;
         }
+        .tab {
+            display: none;
+        }
+        .tab-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .tab-buttons button {
+            padding: 10px 20px;
+            border: 1px solid #ccc;
+            background-color: #f8f9fa;
+            cursor: pointer;
+        }
+        .tab-buttons button.active {
+            background-color: #007bff;
+            color: white;
+            border: none;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>MIDI OLED Startpagina</h1>
-
-    <div class="form-group">
-        <label for="arduino">Selecteer Arduino om te verbinden:</label>
-        <select id="arduino">
-            <option value="arduino1">Arduino 1</option>
-            <option value="arduino2">Arduino 2</option>
-            <option value="arduino3">Arduino 3</option>
-            <!-- Voeg hier meer opties toe indien nodig -->
-        </select>
+    <div class="tab-buttons">
+        <button id="mainTabButton" class="active" onclick="showTab('mainTab')">Hoofdpagina</button>
+        <button id="registerTabButton" onclick="showTab('registerTab')">Registernamen Invoeren</button>
     </div>
 
-    <h2>Keuze Sample Set en Registers Overzicht</h2>
-    <div class="form-group">
-        <label for="sampleSetOverview">Kies een Sample Set:</label>
-        <select id="sampleSetOverview" onchange="updateRegisterOverview()">
-            <option value="set1">Sample Set 1</option>
-            <option value="set2">Sample Set 2</option>
-            <option value="set3">Sample Set 3</option>
-            <!-- Voeg hier meer opties toe indien nodig -->
-        </select>
+    <div id="mainTab" class="tab" style="display: block;">
+        <h1>MIDI OLED Startpagina</h1>
+
+        <div class="form-group">
+            <label for="arduino">Selecteer Arduino om te verbinden:</label>
+            <select id="arduino">
+                <option value="arduino1">Arduino 1</option>
+                <option value="arduino2">Arduino 2</option>
+                <option value="arduino3">Arduino 3</option>
+                <!-- Voeg hier meer opties toe indien nodig -->
+            </select>
+        </div>
+
+        <h2>Keuze Sample Set en Registers Overzicht</h2>
+        <div class="form-group">
+            <label for="sampleSetOverview">Kies een Sample Set:</label>
+            <select id="sampleSetOverview" onchange="updateRegisterOverview()">
+                <option value="set1">Sample Set 1</option>
+                <option value="set2">Sample Set 2</option>
+                <option value="set3">Sample Set 3</option>
+                <!-- Voeg hier meer opties toe indien nodig -->
+            </select>
+        </div>
+
+        <table id="registerOverviewTable">
+            <thead>
+                <tr>
+                    <th>Rij\Kolom</th>
+                    <th>1</th>
+                    <th>2</th>
+                    <th>3</th>
+                    <th>4</th>
+                    <th>5</th>
+                    <th>6</th>
+                    <th>7</th>
+                    <th>8</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- De rijen worden hier dynamisch ingevoegd met JavaScript -->
+            </tbody>
+        </table>
     </div>
 
-    <table id="registerOverviewTable">
-        <thead>
-            <tr>
-                <th>Rij\Kolom</th>
-                <th>1</th>
-                <th>2</th>
-                <th>3</th>
-                <th>4</th>
-                <th>5</th>
-                <th>6</th>
-                <th>7</th>
-                <th>8</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- De rijen worden hier dynamisch ingevoegd met JavaScript -->
-        </tbody>
-    </table>
+    <div id="registerTab" class="tab">
+        <h2>Registernamen Invoeren per Sample Set</h2>
+        <div class="form-group">
+            <label for="sampleSetInput">Kies een Sample Set:</label>
+            <select id="sampleSetInput" onchange="updateRegisterInput()">
+                <option value="set1">Sample Set 1</option>
+                <option value="set2">Sample Set 2</option>
+                <option value="set3">Sample Set 3</option>
+                <!-- Voeg hier meer opties toe indien nodig -->
+            </select>
+        </div>
 
-    <h2>Registernamen Invoeren per Sample Set</h2>
-    <div class="form-group">
-        <label for="sampleSetInput">Kies een Sample Set:</label>
-        <select id="sampleSetInput" onchange="updateRegisterInput()">
-            <option value="set1">Sample Set 1</option>
-            <option value="set2">Sample Set 2</option>
-            <option value="set3">Sample Set 3</option>
-            <!-- Voeg hier meer opties toe indien nodig -->
-        </select>
-    </div>
+        <table id="registerInputTable">
+            <thead>
+                <tr>
+                    <th>Rij\Kolom</th>
+                    <th>1</th>
+                    <th>2</th>
+                    <th>3</th>
+                    <th>4</th>
+                    <th>5</th>
+                    <th>6</th>
+                    <th>7</th>
+                    <th>8</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Generate table rows -->
+                <!-- Row 1 -->
+                <tr>
+                    <td>1</td>
+                    <td><input type="text" name="r1c1"></td>
+                    <td><input type="text" name="r1c2"></td>
+                    <td><input type="text" name="r1c3"></td>
+                    <td><input type="text" name="r1c4"></td>
+                    <td><input type="text" name="r1c5"></td>
+                    <td><input type="text" name="r1c6"></td>
+                    <td><input type="text" name="r1c7"></td>
+                    <td><input type="text" name="r1c8"></td>
+                </tr>
+                <!-- Row 2 -->
+                <tr>
+                    <td>2</td>
+                    <td><input type="text" name="r2c1"></td>
+                    <td><input type="text" name="r2c2"></td>
+                    <td><input type="text" name="r2c3"></td>
+                    <td><input type="text" name="r2c4"></td>
+                    <td><input type="text" name="r2c5"></td>
+                    <td><input type="text" name="r2c6"></td>
+                    <td><input type="text" name="r2c7"></td>
+                    <td><input type="text" name="r2c8"></td>
+                </tr>
+                <!-- Row 3 -->
+                <tr>
+                    <td>3</td>
+                    <td><input type="text" name="r3c1"></td>
+                    <td><input type="text" name="r3c2"></td>
+                    <td><input type="text" name="r3c3"></td>
+                    <td><input type="text" name="r3c4"></td>
+                    <td><input type="text" name="r3c5"></td>
+                    <td><input type="text" name="r3c6"></td>
+                    <td><input type="text" name="r3c7"></td>
+                    <td><input type="text" name="r3c8"></td>
+                </tr>
+                <!-- Row 4 -->
+                <tr>
+                    <td>4</td>
+                    <td><input type="text" name="r4c1"></td>
+                    <td><input type="text" name="r4c2"></td>
+                    <td><input type="text" name="r4c3"></td>
+                    <td><input type="text" name="r4c4"></td>
+                    <td><input type="text" name="r4c5"></td>
+                    <td><input type="text" name="r4c6"></td>
+                    <td><input type="text" name="r4c7"></td>
+                    <td><input type="text" name="r4c8"></td>
+                </tr>
+                <!-- Row 5 -->
+                <tr>
+                    <td>5</td>
+                    <td><input type="text" name="r5c1"></td>
+                    <td><input type="text" name="r5c2"></td>
+                    <td><input type="text" name="r5c3"></td>
+                    <td><input type="text" name="r5c4"></td>
+                    <td><input type="text" name="r5c5"></td>
+                    <td><input type="text" name="r5c6"></td>
+                    <td><input type="text" name="r5c7"></td>
+                    <td><input type="text" name="r5c8"></td>
+                </tr>
+                <!-- Row 6 -->
+                <tr>
+                    <td>6</td>
+                    <td><input type="text" name="r6c1"></td>
+                    <td><input type="text" name="r6c2"></td>
+                    <td><input type="text" name="r6c3"></td>
+                    <td><input type="text" name="r6c4"></td>
+                    <td><input type="text" name="r6c5"></td>
+                    <td><input type="text" name="r6c6"></td>
+                    <td><input type="text" name="r6c7"></td>
+                    <td><input type="text" name="r6c8"></td>
+                </tr>
+            </tbody>
+        </table>
 
-    <table id="registerInputTable">
-        <thead>
-            <tr>
-                <th>Rij\Kolom</th>
-                <th>1</th>
-                <th>2</th>
-                <th>3</th>
-                <th>4</th>
-                <th>5</th>
-                <th>6</th>
-                <th>7</th>
-                <th>8</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Generate table rows -->
-            <!-- Row 1 -->
-            <tr>
-                <td>1</td>
-                <td><input type="text" name="r1c1"></td>
-                <td><input type="text" name="r1c2"></td>
-                <td><input type="text" name="r1c3"></td>
-                <td><input type="text" name="r1c4"></td>
-                <td><input type="text" name="r1c5"></td>
-                <td><input type="text" name="r1c6"></td>
-                <td><input type="text" name="r1c7"></td>
-                <td><input type="text" name="r1c8"></td>
-            </tr>
-            <!-- Row 2 -->
-            <tr>
-                <td>2</td>
-                <td><input type="text" name="r2c1"></td>
-                <td><input type="text" name="r2c2"></td>
-                <td><input type="text" name="r2c3"></td>
-                <td><input type="text" name="r2c4"></td>
-                <td><input type="text" name="r2c5"></td>
-                <td><input type="text" name="r2c6"></td>
-                <td><input type="text" name="r2c7"></td>
-                <td><input type="text" name="r2c8"></td>
-            </tr>
-            <!-- Row 3 -->
-            <tr>
-                <td>3</td>
-                <td><input type="text" name="r3c1"></td>
-                <td><input type="text" name="r3c2"></td>
-                <td><input type="text" name="r3c3"></td>
-                <td><input type="text" name="r3c4"></td>
-                <td><input type="text" name="r3c5"></td>
-                <td><input type="text" name="r3c6"></td>
-                <td><input type="text" name="r3c7"></td>
-                <td><input type="text" name="r3c8"></td>
-            </tr>
-            <!-- Row 4 -->
-            <tr>
-                <td>4</td>
-                <td><input type="text" name="r4c1"></td>
-                <td><input type="text" name="r4c2"></td>
-                <td><input type="text" name="r4c3"></td>
-                <td><input type="text" name="r4c4"></td>
-                <td><input type="text" name="r4c5"></td>
-                <td><input type="text" name="r4c6"></td>
-                <td><input type="text" name="r4c7"></td>
-                <td><input type="text" name="r4c8"></td>
-            </tr>
-            <!-- Row 5 -->
-            <tr>
-                <td>5</td>
-                <td><input type="text" name="r5c1"></td>
-                <td><input type="text" name="r5c2"></td>
-                <td><input type="text" name="r5c3"></td>
-                <td><input type="text" name="r5c4"></td>
-                <td><input type="text" name="r5c5"></td>
-                <td><input type="text" name="r5c6"></td>
-                <td><input type="text" name="r5c7"></td>
-                <td><input type="text" name="r5c8"></td>
-            </tr>
-            <!-- Row 6 -->
-            <tr>
-                <td>6</td>
-                <td><input type="text" name="r6c1"></td>
-                <td><input type="text" name="r6c2"></td>
-                <td><input type="text" name="r6c3"></td>
-                <td><input type="text" name="r6c4"></td>
-                <td><input type="text" name="r6c5"></td>
-                <td><input type="text" name="r6c6"></td>
-                <td><input type="text" name="r6c7"></td>
-                <td><input type="text" name="r6c8"></td>
-            </tr>
-        </tbody>
-    </table>
-
-    <div class="form-group">
-        <button type="button" onclick="submitData()">Verzenden</button>
+        <div class="form-group">
+            <button onclick="submitData()">Verzenden</button>
+        </div>
     </div>
 </div>
 
 <script>
     const sampleSets = {
-        set1: [
-            ["Set1_Rij1_Kol1", "Set1_Rij1_Kol2", "Set1_Rij1_Kol3", "Set1_Rij1_Kol4", "Set1_Rij1_Kol5", "Set1_Rij1_Kol6", "Set1_Rij1_Kol7", "Set1_Rij1_Kol8"],
-            ["Set1_Rij2_Kol1", "Set1_Rij2_Kol2", "Set1_Rij2_Kol3", "Set1_Rij2_Kol4", "Set1_Rij2_Kol5", "Set1_Rij2_Kol6", "Set1_Rij2_Kol7", "Set1_Rij2_Kol8"],
-            ["Set1_Rij3_Kol1", "Set1_Rij3_Kol2", "Set1_Rij3_Kol3", "Set1_Rij3_Kol4", "Set1_Rij3_Kol5", "Set1_Rij3_Kol6", "Set1_Rij3_Kol7", "Set1_Rij3_Kol8"],
-            ["Set1_Rij4_Kol1", "Set1_Rij4_Kol2", "Set1_Rij4_Kol3", "Set1_Rij4_Kol4", "Set1_Rij4_Kol5", "Set1_Rij4_Kol6", "Set1_Rij4_Kol7", "Set1_Rij4_Kol8"],
-            ["Set1_Rij5_Kol1", "Set1_Rij5_Kol2", "Set1_Rij5_Kol3", "Set1_Rij5_Kol4", "Set1_Rij5_Kol5", "Set1_Rij5_Kol6", "Set1_Rij5_Kol7", "Set1_Rij5_Kol8"],
-            ["Set1_Rij6_Kol1", "Set1_Rij6_Kol2", "Set1_Rij6_Kol3", "Set1_Rij6_Kol4", "Set1_Rij6_Kol5", "Set1_Rij6_Kol6", "Set1_Rij6_Kol7", "Set1_Rij6_Kol8"]
-        ],
-        set2: [
-            ["Set2_Rij1_Kol1", "Set2_Rij1_Kol2", "Set2_Rij1_Kol3", "Set2_Rij1_Kol4", "Set2_Rij1_Kol5", "Set2_Rij1_Kol6", "Set2_Rij1_Kol7", "Set2_Rij1_Kol8"],
-            ["Set2_Rij2_Kol1", "Set2_Rij2_Kol2", "Set2_Rij2_Kol3", "Set2_Rij2_Kol4", "Set2_Rij2_Kol5", "Set2_Rij2_Kol6", "Set2_Rij2_Kol7", "Set2_Rij2_Kol8"],
-            ["Set2_Rij3_Kol1", "Set2_Rij3_Kol2", "Set2_Rij3_Kol3", "Set2_Rij3_Kol4", "Set2_Rij3_Kol5", "Set2_Rij3_Kol6", "Set2_Rij3_Kol7", "Set2_Rij3_Kol8"],
-            ["Set2_Rij4_Kol1", "Set2_Rij4_Kol2", "Set2_Rij4_Kol3", "Set2_Rij4_Kol4", "Set2_Rij4_Kol5", "Set2_Rij4_Kol6", "Set2_Rij4_Kol7", "Set2_Rij4_Kol8"],
-            ["Set2_Rij5_Kol1", "Set2_Rij5_Kol2", "Set2_Rij5_Kol3", "Set2_Rij5_Kol4", "Set2_Rij5_Kol5", "Set2_Rij5_Kol6", "Set2_Rij5_Kol7", "Set2_Rij5_Kol8"],
-            ["Set2_Rij6_Kol1", "Set2_Rij6_Kol2", "Set2_Rij6_Kol3", "Set2_Rij6_Kol4", "Set2_Rij6_Kol5", "Set2_Rij6_Kol6", "Set2_Rij6_Kol7", "Set2_Rij6_Kol8"]
-        ],
-        set3: [
-            ["Set3_Rij1_Kol1", "Set3_Rij1_Kol2", "Set3_Rij1_Kol3", "Set3_Rij1_Kol4", "Set3_Rij1_Kol5", "Set3_Rij1_Kol6", "Set3_Rij1_Kol7", "Set3_Rij1_Kol8"],
-            ["Set3_Rij2_Kol1", "Set3_Rij2_Kol2", "Set3_Rij2_Kol3", "Set3_Rij2_Kol4", "Set3_Rij2_Kol5", "Set3_Rij2_Kol6", "Set3_Rij2_Kol7", "Set3_Rij2_Kol8"],
-            ["Set3_Rij3_Kol1", "Set3_Rij3_Kol2", "Set3_Rij3_Kol3", "Set3_Rij3_Kol4", "Set3_Rij3_Kol5", "Set3_Rij3_Kol6", "Set3_Rij3_Kol7", "Set3_Rij3_Kol8"],
-            ["Set3_Rij4_Kol1", "Set3_Rij4_Kol2", "Set3_Rij4_Kol3", "Set3_Rij4_Kol4", "Set3_Rij4_Kol5", "Set3_Rij4_Kol6", "Set3_Rij4_Kol7", "Set3_Rij4_Kol8"],
-            ["Set3_Rij5_Kol1", "Set3_Rij5_Kol2", "Set3_Rij5_Kol3", "Set3_Rij5_Kol4", "Set3_Rij5_Kol5", "Set3_Rij5_Kol6", "Set3_Rij5_Kol7", "Set3_Rij5_Kol8"],
-            ["Set3_Rij6_Kol1", "Set3_Rij6_Kol2", "Set3_Rij6_Kol3", "Set3_Rij6_Kol4", "Set3_Rij6_Kol5", "Set3_Rij6_Kol6", "Set3_Rij6_Kol7", "Set3_Rij6_Kol8"]
-        ]
+        set1: Array(6).fill().map(() => Array(8).fill('')),
+        set2: Array(6).fill().map(() => Array(8).fill('')),
+        set3: Array(6).fill().map(() => Array(8).fill(''))
     };
 
     function updateRegisterOverview() {
@@ -271,7 +278,27 @@
     }
 
     function submitData() {
+        const sampleSet = document.getElementById('sampleSetInput').value;
+        const tableBody = document.getElementById('registerInputTable').getElementsByTagName('tbody')[0];
+
+        tableBody.querySelectorAll('input').forEach((input, index) => {
+            const rowIndex = Math.floor(index / 8);
+            const colIndex = index % 8;
+            sampleSets[sampleSet][rowIndex][colIndex] = input.value;
+        });
+
         alert('Gegevens verzonden!');
+    }
+
+    function showTab(tabId) {
+        document.getElementById('mainTab').style.display = 'none';
+        document.getElementById('registerTab').style.display = 'none';
+        document.getElementById(tabId).style.display = 'block';
+
+        document.getElementById('mainTabButton').classList.remove('active');
+        document.getElementById('registerTabButton').classList.remove('active');
+
+        document.getElementById(tabId + 'Button').classList.add('active');
     }
 
     document.addEventListener('DOMContentLoaded', () => {
