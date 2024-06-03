@@ -1,0 +1,25 @@
+# Script om sample set namen met bijbehorende registers in te voeren
+
+def input_sample_sets():
+    sample_sets = {}
+    while True:
+        sample_set_name = input("Voer de naam van de sample set in (of typ 'stop' om te stoppen): ")
+        if sample_set_name.lower() == "stop":
+            break
+        registers = []
+        while True:
+            register = input("Voer het registernummer in (of typ 'stop' om te stoppen met registers toevoegen): ")
+            if register.lower() == "stop":
+                break
+            registers.append(register)
+        sample_sets[sample_set_name] = registers
+    return sample_sets
+
+def main():
+    sample_sets = input_sample_sets()
+    print("Ingevoerde sample sets:")
+    for sample_set, registers in sample_sets.items():
+        print(f"Sample set: {sample_set}, Registers: {', '.join(registers)}")
+
+if __name__ == "__main__":
+    main()
