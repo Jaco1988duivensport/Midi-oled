@@ -38,6 +38,23 @@
             border: 1px solid #ccc;
             border-top: none;
         }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
@@ -68,7 +85,15 @@
 
     <div id="sampleSets" class="tabcontent">
         <h2>Sample Sets Beheren</h2>
-        <!-- Hier kan de functionaliteit voor het beheren van sample sets worden toegevoegd -->
+        <form id="sampleSetForm">
+            <label for="sampleSetName">Sample Set Naam:</label>
+            <input type="text" id="sampleSetName" name="sampleSetName" required><br>
+            
+            <label for="registers">Orgel Registers:</label>
+            <textarea id="registers" name="registers" rows="4" cols="50" required></textarea><br>
+            
+            <input type="submit" value="Toevoegen">
+        </form>
     </div>
 
     <script>
@@ -84,6 +109,48 @@
             }
             document.getElementById(tabName).style.display = "block";
             evt.currentTarget.className += " active";
+        }
+
+        // JavaScript-code voor het verwerken van het formulier voor het toevoegen van sample sets
+        const sampleSetForm = document.getElementById('sampleSetForm');
+        sampleSetForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const sampleSetName = document.getElementById('sampleSetName').value;
+            const registers = document.getElementById('registers').value.split('\n');
+            console.log('Toegevoegde sample set naam:', sampleSetName);
+            console.log('Toegevoegde orgel registers:', registers);
+            // Voeg hier de logica toe om de nieuwe sample set en registers te verwerken
+            // bijvoorbeeld: opslaan in een array of database
+        });
+
+        // JavaScript-code voor MIDI-communicatie
+        // Hier kun je MIDI-functionaliteit toevoegen
+        // Zie: https://webmidijs.org/docs/v1.2.5/index.html voor documentatie
+
+        // Voorbeeldcode:
+        if (navigator.requestMIDIAccess) {
+            console.log('Web MIDI is supported in this browser');
+            navigator.requestMIDIAccess()
+                .then(onMIDISuccess, onMIDIFailure);
+        } else {
+            console.log('Web MIDI is not supported in this browser');
+        }
+
+        function onMIDISuccess(midiAccess) {
+            console.log('MIDI access granted');
+            const inputs = midiAccess.inputs.values();
+            for (let input = inputs.next(); input && !input.done; input = inputs.next()) {
+                input.value.onmidimessage = getMIDIMessage;
+            }
+        }
+
+        function onMIDIFailure() {
+            console.log('MIDI access denied');
+        }
+
+        function getMIDIMessage(message) {
+            console.log('MIDI message received', message);
+            // Voeg hier de verwerking van MIDI-berichten toe
         }
     </script>
 </body>
