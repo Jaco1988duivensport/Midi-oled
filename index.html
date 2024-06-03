@@ -15,18 +15,13 @@
         form {
             max-width: 500px;
             margin: 0 auto;
+            margin-bottom: 20px;
         }
         label {
             display: block;
             margin-bottom: 5px;
         }
-        input[type="text"] {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            box-sizing: border-box;
-        }
-        select {
+        input[type="text"], select {
             width: 100%;
             padding: 8px;
             margin-bottom: 10px;
@@ -43,20 +38,45 @@
         input[type="submit"]:hover {
             background-color: #45a049;
         }
+        .oled-block {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .oled-column {
+            flex: 1;
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
     <h1>MIDI OLED Configurator</h1>
-    <form id="oledForm">
-        <label for="displaySelect">Selecteer een display:</label>
-        <select id="displaySelect">
-            <option value="display1">Display 1</option>
-            <!-- Voeg hier meer opties toe voor andere displays -->
+    <form id="configForm">
+        <label for="arduinoSelect">Selecteer de aangesloten Arduino:</label>
+        <select id="arduinoSelect">
+            <option value="arduino1">Arduino 1</option>
+            <!-- Voeg hier meer opties toe voor andere Arduinos -->
         </select>
-        <label for="contentInput">Inhoud voor het display:</label>
-        <input type="text" id="contentInput" name="contentInput" value=""><br>
-        <input type="submit" value="Update">
+
+        <label for="sampleSetSelect">Selecteer de orgel sample set:</label>
+        <select id="sampleSetSelect">
+            <option value="sampleSet1">Sample Set 1</option>
+            <!-- Voeg hier meer opties toe voor andere sample sets -->
+        </select>
+
+        <input type="submit" value="Start">
     </form>
+
+    <div class="oled-block">
+        <div class="oled-column">
+            <!-- Hier worden de eerste 24 OLED-displays weergegeven -->
+        </div>
+        <div class="oled-column">
+            <!-- Hier worden de volgende 24 OLED-displays weergegeven -->
+        </div>
+    </div>
 
     <script>
         // JavaScript-code voor MIDI-communicatie
@@ -90,16 +110,16 @@
         }
 
         // Verwerk het formulier
-        const form = document.getElementById('oledForm');
+        const form = document.getElementById('configForm');
         form.addEventListener('submit', function(event) {
             event.preventDefault();
-            const displaySelect = document.getElementById('displaySelect');
-            const selectedDisplay = displaySelect.options[displaySelect.selectedIndex].value;
-            const contentInput = document.getElementById('contentInput').value;
-            console.log('Geselecteerde display:', selectedDisplay);
-            console.log('Inhoud voor de display:', contentInput);
-            // Voeg hier de logica toe om de invoer naar de Arduino te sturen
+            const arduinoSelect = document.getElementById('arduinoSelect').value;
+            const sampleSetSelect = document.getElementById('sampleSetSelect').value;
+            console.log('Geselecteerde Arduino:', arduinoSelect);
+            console.log('Geselecteerde sample set:', sampleSetSelect);
+            // Voeg hier de logica toe om de geselecteerde Arduino en sample set te starten
         });
     </script>
 </body>
 </html>
+
