@@ -46,32 +46,24 @@
         button:hover {
             background-color: #0056b3;
         }
-        .oled-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .oled {
-            width: 50px;
-            height: 30px;
-            background-color: black;
-            border: 1px solid #ccc;
-            margin: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-        }
         table {
-            margin-top: 20px;
-            width: 100%;
             border-collapse: collapse;
-        }
-        table, th, td {
-            border: 1px solid #ccc;
+            border: 2px solid #ccc;
+            margin: auto;
         }
         th, td {
-            padding: 8px;
+            border: 1px solid #ccc;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            padding: 0;
+        }
+        td input[type="text"] {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            border: none;
             text-align: center;
         }
         .tab {
@@ -116,31 +108,31 @@
             </select>
         </div>
 
-        <div class="form-group">
-            <label for="sampleSetName">Sampelset Naam:</label>
-            <input type="text" id="sampleSetName" value="Sample Set 1">
-        </div>
-
         <h2>Keuze Sample Set en Registers Overzicht</h2>
         <div class="form-group">
-            <label for="sampleSetOverview">Kies een Sample Set:</label>
-            <select id="sampleSetOverview" onchange="updateRegisterOverview()">
-                <option value="set1">Sample Set 1</option>
-                <option value="set2">Sample Set 2</option>
-                <option value="set3">Sample Set 3</option>
-                <!-- Voeg hier meer opties toe indien nodig -->
-            </select>
+            <label for="sampleSetOverview">Huidige Sample Set:</label>
+            <span id="currentSampleSet">Sample Set 1</span>
+            <button onclick="editSampleSetName()">Bewerk</button>
         </div>
 
-        <div class="oled-container" id="oledContainer">
-            <!-- OLED-vakjes worden hier dynamisch ingevoegd met JavaScript -->
-        </div>
+        <table id="registerOverviewTable">
+            <tbody>
+                <!-- De rijen worden hier dynamisch ingevoegd met JavaScript -->
+            </tbody>
+        </table>
     </div>
 
     <div id="registerTab" class="tab">
+        <h2>Sampelset Naam Bewerken</h2>
+        <div class="form-group">
+            <label for="sampleSetNameInput">Nieuwe Sample Set Naam:</label>
+            <input type="text" id="sampleSetNameInput">
+        </div>
+        <button onclick="updateSampleSetName()">Opslaan</button>
+
         <h2>Registernamen Invoeren per Sample Set</h2>
         <div class="form-group">
-            <label for="sampleSetInput">Kies een Sample Set:</label>
+            <label for="sampleSetInput">Selecteer Sample Set:</label>
             <select id="sampleSetInput" onchange="updateRegisterInput()">
                 <option value="set1">Sample Set 1</option>
                 <option value="set2">Sample Set 2</option>
@@ -150,32 +142,9 @@
         </div>
 
         <table id="registerInputTable">
-            <thead>
-                <tr>
-                    <th>1</th>
-                    <th>2</th>
-                    <th>3</th>
-                    <th>4</th>
-                    <th>5</th>
-                    <th>6</th>
-                    <th>7</th>
-                    <th>8</th>
-                </tr>
-            </thead>
             <tbody>
                 <!-- Generate table rows -->
-                <!-- Row 1 -->
-                <tr>
-                    <td><input type="text" name="r1c1"></td>
-                    <td><input type="text" name="r1c2"></td>
-                    <td><input type="text" name="r1c3"></td>
-                    <td><input type="text" name="r1c4"></td>
-                    <td><input type="text" name="r1c5"></td>
-                    <td><input type="text" name="r1c6"></td>
-                    <td><input type="text" name="r1c7"></td>
-                    <td><input type="text" name="r1c8"></td>
-                </tr>
-                <!-- Voeg hier meer rijen toe indien nodig -->
+                <!-- Dit wordt dynamisch ingevuld via JavaScript -->
             </tbody>
         </table>
 
@@ -184,6 +153,49 @@
         </div>
     </div>
 </div>
+
+<script>
+    const sampleSets = {
+        set1: Array(6).fill().map(() => Array(8).fill('')),
+        set2: Array(6).fill().map(() => Array(8).fill('')),
+        set3: Array(6).fill().map(() => Array(8).fill(''))
+    };
+
+    function updateRegisterOverview() {
+        const sampleSet = document.getElementById('sampleSetOverview').value;
+        const tableBody = document.getElementById('registerOverviewTable').getElementsByTagName('tbody')[0];
+        tableBody.innerHTML = '';
+
+        sampleSets[sampleSet].forEach(row => {
+            const tr = document.createElement('tr');
+            row.forEach(cell => {
+                const td = document.createElement('td');
+                td.textContent = cell;
+                tr.appendChild(td);
+            });
+            tableBody.appendChild(tr);
+        });
+    }
+
+    function updateRegisterInput() {
+        const sampleSet = document.getElementById('sampleSetInput').value;
+        const tableBody = document.getElementById('registerInputTable').getElementsByTagName('tbody')[0];
+
+        tableBody.querySelectorAll('input').forEach((input, index) => {
+            const rowIndex = Math.floor(index / 8);
+            const colIndex = index % 8;
+            input.value = sampleSets[sampleSet][rowIndex][colIndex];
+        });
+    }
+
+    function submitData() {
+        const sampleSet = document.getElementById('sampleSetInput').value;
+        const tableBody = document.getElementById('registerInputTable').getElementsByTagName('tbody')[0];
+
+        tableBody.querySelectorAll('input').forEach((input, index) => {
+            const rowIndex = Math.floor(index / 8);
+            const
+
 
 <script>
     const sampleSets = {
