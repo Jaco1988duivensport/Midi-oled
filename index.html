@@ -1,157 +1,191 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MIDI OLED Configurator</title>
+    <title>MIDI OLED Startpagina</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        h1 {
-            text-align: center;
-        }
-        .tab {
-            overflow: hidden;
-            border: 1px solid #ccc;
-            background-color: #f1f1f1;
-        }
-        .tab button {
-            background-color: inherit;
-            float: left;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            padding: 14px 16px;
-            transition: 0.3s;
-        }
-        .tab button:hover {
-            background-color: #ddd;
-        }
-        .tab button.active {
-            background-color: #ccc;
-        }
-        .tabcontent {
-            display: none;
+            background-color: #f0f0f0;
+            margin: 0;
             padding: 20px;
-            border: 1px solid #ccc;
-            border-top: none;
         }
-        input[type="text"], textarea {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            box-sizing: border-box;
+        h1, h2 {
+            color: #333;
         }
-        input[type="submit"] {
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"], select, button {
             width: 100%;
             padding: 10px;
-            background-color: #4CAF50;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #007bff;
             color: white;
             border: none;
             cursor: pointer;
         }
-        input[type="submit"]:hover {
-            background-color: #45a049;
+        button:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <h1>MIDI OLED Configurator</h1>
-    
-    <div class="tab">
-        <button class="tablinks" onclick="openTab(event, 'config')">Configuratie</button>
-        <button class="tablinks" onclick="openTab(event, 'sampleSets')">Sample Sets</button>
-    </div>
-    
-    <div id="config" class="tabcontent">
-        <form id="configForm">
-            <label for="arduinoSelect">Selecteer de aangesloten Arduino:</label>
-            <select id="arduinoSelect">
-                <option value="arduino1">Arduino 1</option>
-                <!-- Voeg hier meer opties toe voor andere Arduinos -->
-            </select>
 
-            <label for="sampleSetSelect">Selecteer de orgel sample set:</label>
-            <select id="sampleSetSelect">
-                <option value="sampleSet1">Sample Set 1</option>
-                <!-- Voeg hier meer opties toe voor andere sample sets -->
-            </select>
+<div class="container">
+    <h1>MIDI OLED Startpagina</h1>
 
-            <input type="submit" value="Start">
-        </form>
+    <div class="form-group">
+        <label for="arduino">Selecteer Arduino om te verbinden:</label>
+        <select id="arduino">
+            <option value="arduino1">Arduino 1</option>
+            <option value="arduino2">Arduino 2</option>
+            <option value="arduino3">Arduino 3</option>
+            <!-- Voeg hier meer opties toe indien nodig -->
+        </select>
     </div>
 
-    <div id="sampleSets" class="tabcontent">
-        <h2>Sample Sets Beheren</h2>
-        <form id="sampleSetForm">
-            <label for="sampleSetName">Sample Set Naam:</label>
-            <input type="text" id="sampleSetName" name="sampleSetName" required><br>
-            
-            <label for="registers">Orgel Registers:</label>
-            <textarea id="registers" name="registers" rows="4" cols="50" required></textarea><br>
-            
-            <input type="submit" value="Toevoegen">
-        </form>
+    <div class="form-group">
+        <label for="sampleSet">Kies een Sample Set:</label>
+        <select id="sampleSet">
+            <option value="set1">Sample Set 1</option>
+            <option value="set2">Sample Set 2</option>
+            <option value="set3">Sample Set 3</option>
+            <!-- Voeg hier meer opties toe indien nodig -->
+        </select>
     </div>
 
-    <script>
-        function openTab(evt, tabName) {
-            var i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-            tablinks = document.getElementsByClassName("tablinks");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
-            }
-            document.getElementById(tabName).style.display = "block";
-            evt.currentTarget.className += " active";
-        }
+    <h2>Registernamen Invoeren</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Rij\Kolom</th>
+                <th>1</th>
+                <th>2</th>
+                <th>3</th>
+                <th>4</th>
+                <th>5</th>
+                <th>6</th>
+                <th>7</th>
+                <th>8</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Generate table rows -->
+            <!-- Row 1 -->
+            <tr>
+                <td>1</td>
+                <td><input type="text" name="r1c1"></td>
+                <td><input type="text" name="r1c2"></td>
+                <td><input type="text" name="r1c3"></td>
+                <td><input type="text" name="r1c4"></td>
+                <td><input type="text" name="r1c5"></td>
+                <td><input type="text" name="r1c6"></td>
+                <td><input type="text" name="r1c7"></td>
+                <td><input type="text" name="r1c8"></td>
+            </tr>
+            <!-- Row 2 -->
+            <tr>
+                <td>2</td>
+                <td><input type="text" name="r2c1"></td>
+                <td><input type="text" name="r2c2"></td>
+                <td><input type="text" name="r2c3"></td>
+                <td><input type="text" name="r2c4"></td>
+                <td><input type="text" name="r2c5"></td>
+                <td><input type="text" name="r2c6"></td>
+                <td><input type="text" name="r2c7"></td>
+                <td><input type="text" name="r2c8"></td>
+            </tr>
+            <!-- Row 3 -->
+            <tr>
+                <td>3</td>
+                <td><input type="text" name="r3c1"></td>
+                <td><input type="text" name="r3c2"></td>
+                <td><input type="text" name="r3c3"></td>
+                <td><input type="text" name="r3c4"></td>
+                <td><input type="text" name="r3c5"></td>
+                <td><input type="text" name="r3c6"></td>
+                <td><input type="text" name="r3c7"></td>
+                <td><input type="text" name="r3c8"></td>
+            </tr>
+            <!-- Row 4 -->
+            <tr>
+                <td>4</td>
+                <td><input type="text" name="r4c1"></td>
+                <td><input type="text" name="r4c2"></td>
+                <td><input type="text" name="r4c3"></td>
+                <td><input type="text" name="r4c4"></td>
+                <td><input type="text" name="r4c5"></td>
+                <td><input type="text" name="r4c6"></td>
+                <td><input type="text" name="r4c7"></td>
+                <td><input type="text" name="r4c8"></td>
+            </tr>
+            <!-- Row 5 -->
+            <tr>
+                <td>5</td>
+                <td><input type="text" name="r5c1"></td>
+                <td><input type="text" name="r5c2"></td>
+                <td><input type="text" name="r5c3"></td>
+                <td><input type="text" name="r5c4"></td>
+                <td><input type="text" name="r5c5"></td>
+                <td><input type="text" name="r5c6"></td>
+                <td><input type="text" name="r5c7"></td>
+                <td><input type="text" name="r5c8"></td>
+            </tr>
+            <!-- Row 6 -->
+            <tr>
+                <td>6</td>
+                <td><input type="text" name="r6c1"></td>
+                <td><input type="text" name="r6c2"></td>
+                <td><input type="text" name="r6c3"></td>
+                <td><input type="text" name="r6c4"></td>
+                <td><input type="text" name="r6c5"></td>
+                <td><input type="text" name="r6c6"></td>
+                <td><input type="text" name="r6c7"></td>
+                <td><input type="text" name="r6c8"></td>
+            </tr>
+        </tbody>
+    </table>
 
-        // JavaScript-code voor het verwerken van het formulier voor het toevoegen van sample sets
-        const sampleSetForm = document.getElementById('sampleSetForm');
-        sampleSetForm.addEventListener('submit', function(event) {
-            event.preventDefault();
-            const sampleSetName = document.getElementById('sampleSetName').value;
-            const registers = document.getElementById('registers').value.split('\n');
-            console.log('Toegevoegde sample set naam:', sampleSetName);
-            console.log('Toegevoegde orgel registers:', registers);
-            // Voeg hier de logica toe om de nieuwe sample set en registers te verwerken
-            // bijvoorbeeld: opslaan in een array of database
-        });
+    <div class="form-group">
+        <button type="button" onclick="submitData()">Verzenden</button>
+    </div>
+</div>
 
-        // JavaScript-code voor MIDI-communicatie
-        // Hier kun je MIDI-functionaliteit toevoegen
-        // Zie: https://webmidijs.org/docs/v1.2.5/index.html voor documentatie
+<script>
+    function submitData() {
+        // Hier kan de logica worden toegevoegd om de gegevens te verzenden
+        alert('Gegevens verzonden!');
+    }
+</script>
 
-        // Voorbeeldcode:
-        if (navigator.requestMIDIAccess) {
-            console.log('Web MIDI is supported in this browser');
-            navigator.requestMIDIAccess()
-                .then(onMIDISuccess, onMIDIFailure);
-        } else {
-            console.log('Web MIDI is not supported in this browser');
-        }
-
-        function onMIDISuccess(midiAccess) {
-            console.log('MIDI access granted');
-            const inputs = midiAccess.inputs.values();
-            for (let input = inputs.next(); input && !input.done; input = inputs.next()) {
-                input.value.onmidimessage = getMIDIMessage;
-            }
-        }
-
-        function onMIDIFailure() {
-            console.log('MIDI access denied');
-        }
-
-        function getMIDIMessage(message) {
-            console.log('MIDI message received', message);
-            // Voeg hier de verwerking van MIDI-berichten toe
-        }
-    </script>
 </body>
 </html>
