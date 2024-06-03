@@ -41,6 +41,7 @@
             color: white;
             border: none;
             cursor: pointer;
+            padding: 10px;
         }
         button:hover {
             background-color: #0056b3;
@@ -112,7 +113,6 @@
         <table id="registerOverviewTable">
             <thead>
                 <tr>
-                    <th>Rij\Kolom</th>
                     <th>1</th>
                     <th>2</th>
                     <th>3</th>
@@ -144,7 +144,6 @@
         <table id="registerInputTable">
             <thead>
                 <tr>
-                    <th>Rij\Kolom</th>
                     <th>1</th>
                     <th>2</th>
                     <th>3</th>
@@ -159,7 +158,6 @@
                 <!-- Generate table rows -->
                 <!-- Row 1 -->
                 <tr>
-                    <td>1</td>
                     <td><input type="text" name="r1c1"></td>
                     <td><input type="text" name="r1c2"></td>
                     <td><input type="text" name="r1c3"></td>
@@ -171,7 +169,6 @@
                 </tr>
                 <!-- Row 2 -->
                 <tr>
-                    <td>2</td>
                     <td><input type="text" name="r2c1"></td>
                     <td><input type="text" name="r2c2"></td>
                     <td><input type="text" name="r2c3"></td>
@@ -183,7 +180,6 @@
                 </tr>
                 <!-- Row 3 -->
                 <tr>
-                    <td>3</td>
                     <td><input type="text" name="r3c1"></td>
                     <td><input type="text" name="r3c2"></td>
                     <td><input type="text" name="r3c3"></td>
@@ -195,7 +191,6 @@
                 </tr>
                 <!-- Row 4 -->
                 <tr>
-                    <td>4</td>
                     <td><input type="text" name="r4c1"></td>
                     <td><input type="text" name="r4c2"></td>
                     <td><input type="text" name="r4c3"></td>
@@ -207,7 +202,6 @@
                 </tr>
                 <!-- Row 5 -->
                 <tr>
-                    <td>5</td>
                     <td><input type="text" name="r5c1"></td>
                     <td><input type="text" name="r5c2"></td>
                     <td><input type="text" name="r5c3"></td>
@@ -219,7 +213,6 @@
                 </tr>
                 <!-- Row 6 -->
                 <tr>
-                    <td>6</td>
                     <td><input type="text" name="r6c1"></td>
                     <td><input type="text" name="r6c2"></td>
                     <td><input type="text" name="r6c3"></td>
@@ -250,18 +243,13 @@
         const tableBody = document.getElementById('registerOverviewTable').getElementsByTagName('tbody')[0];
         tableBody.innerHTML = '';
 
-        sampleSets[sampleSet].forEach((row, rowIndex) => {
+        sampleSets[sampleSet].forEach(row => {
             const tr = document.createElement('tr');
-            const rowHeader = document.createElement('td');
-            rowHeader.textContent = rowIndex + 1;
-            tr.appendChild(rowHeader);
-
             row.forEach(cell => {
                 const td = document.createElement('td');
                 td.textContent = cell;
                 tr.appendChild(td);
             });
-
             tableBody.appendChild(tr);
         });
     }
@@ -288,6 +276,7 @@
         });
 
         alert('Gegevens verzonden!');
+        updateRegisterOverview();
     }
 
     function showTab(tabId) {
