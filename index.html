@@ -73,9 +73,10 @@
         </select>
     </div>
 
+    <h2>Keuze Sample Set en Registers Overzicht</h2>
     <div class="form-group">
-        <label for="sampleSet">Kies een Sample Set:</label>
-        <select id="sampleSet">
+        <label for="sampleSetOverview">Kies een Sample Set:</label>
+        <select id="sampleSetOverview" onchange="updateRegisterOverview()">
             <option value="set1">Sample Set 1</option>
             <option value="set2">Sample Set 2</option>
             <option value="set3">Sample Set 3</option>
@@ -83,8 +84,37 @@
         </select>
     </div>
 
-    <h2>Registernamen Invoeren</h2>
-    <table>
+    <table id="registerOverviewTable">
+        <thead>
+            <tr>
+                <th>Rij\Kolom</th>
+                <th>1</th>
+                <th>2</th>
+                <th>3</th>
+                <th>4</th>
+                <th>5</th>
+                <th>6</th>
+                <th>7</th>
+                <th>8</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- De rijen worden hier dynamisch ingevoegd met JavaScript -->
+        </tbody>
+    </table>
+
+    <h2>Registernamen Invoeren per Sample Set</h2>
+    <div class="form-group">
+        <label for="sampleSetInput">Kies een Sample Set:</label>
+        <select id="sampleSetInput" onchange="updateRegisterInput()">
+            <option value="set1">Sample Set 1</option>
+            <option value="set2">Sample Set 2</option>
+            <option value="set3">Sample Set 3</option>
+            <!-- Voeg hier meer opties toe indien nodig -->
+        </select>
+    </div>
+
+    <table id="registerInputTable">
         <thead>
             <tr>
                 <th>Rij\Kolom</th>
@@ -181,10 +211,73 @@
 </div>
 
 <script>
+    const sampleSets = {
+        set1: [
+            ["Set1_Rij1_Kol1", "Set1_Rij1_Kol2", "Set1_Rij1_Kol3", "Set1_Rij1_Kol4", "Set1_Rij1_Kol5", "Set1_Rij1_Kol6", "Set1_Rij1_Kol7", "Set1_Rij1_Kol8"],
+            ["Set1_Rij2_Kol1", "Set1_Rij2_Kol2", "Set1_Rij2_Kol3", "Set1_Rij2_Kol4", "Set1_Rij2_Kol5", "Set1_Rij2_Kol6", "Set1_Rij2_Kol7", "Set1_Rij2_Kol8"],
+            ["Set1_Rij3_Kol1", "Set1_Rij3_Kol2", "Set1_Rij3_Kol3", "Set1_Rij3_Kol4", "Set1_Rij3_Kol5", "Set1_Rij3_Kol6", "Set1_Rij3_Kol7", "Set1_Rij3_Kol8"],
+            ["Set1_Rij4_Kol1", "Set1_Rij4_Kol2", "Set1_Rij4_Kol3", "Set1_Rij4_Kol4", "Set1_Rij4_Kol5", "Set1_Rij4_Kol6", "Set1_Rij4_Kol7", "Set1_Rij4_Kol8"],
+            ["Set1_Rij5_Kol1", "Set1_Rij5_Kol2", "Set1_Rij5_Kol3", "Set1_Rij5_Kol4", "Set1_Rij5_Kol5", "Set1_Rij5_Kol6", "Set1_Rij5_Kol7", "Set1_Rij5_Kol8"],
+            ["Set1_Rij6_Kol1", "Set1_Rij6_Kol2", "Set1_Rij6_Kol3", "Set1_Rij6_Kol4", "Set1_Rij6_Kol5", "Set1_Rij6_Kol6", "Set1_Rij6_Kol7", "Set1_Rij6_Kol8"]
+        ],
+        set2: [
+            ["Set2_Rij1_Kol1", "Set2_Rij1_Kol2", "Set2_Rij1_Kol3", "Set2_Rij1_Kol4", "Set2_Rij1_Kol5", "Set2_Rij1_Kol6", "Set2_Rij1_Kol7", "Set2_Rij1_Kol8"],
+            ["Set2_Rij2_Kol1", "Set2_Rij2_Kol2", "Set2_Rij2_Kol3", "Set2_Rij2_Kol4", "Set2_Rij2_Kol5", "Set2_Rij2_Kol6", "Set2_Rij2_Kol7", "Set2_Rij2_Kol8"],
+            ["Set2_Rij3_Kol1", "Set2_Rij3_Kol2", "Set2_Rij3_Kol3", "Set2_Rij3_Kol4", "Set2_Rij3_Kol5", "Set2_Rij3_Kol6", "Set2_Rij3_Kol7", "Set2_Rij3_Kol8"],
+            ["Set2_Rij4_Kol1", "Set2_Rij4_Kol2", "Set2_Rij4_Kol3", "Set2_Rij4_Kol4", "Set2_Rij4_Kol5", "Set2_Rij4_Kol6", "Set2_Rij4_Kol7", "Set2_Rij4_Kol8"],
+            ["Set2_Rij5_Kol1", "Set2_Rij5_Kol2", "Set2_Rij5_Kol3", "Set2_Rij5_Kol4", "Set2_Rij5_Kol5", "Set2_Rij5_Kol6", "Set2_Rij5_Kol7", "Set2_Rij5_Kol8"],
+            ["Set2_Rij6_Kol1", "Set2_Rij6_Kol2", "Set2_Rij6_Kol3", "Set2_Rij6_Kol4", "Set2_Rij6_Kol5", "Set2_Rij6_Kol6", "Set2_Rij6_Kol7", "Set2_Rij6_Kol8"]
+        ],
+        set3: [
+            ["Set3_Rij1_Kol1", "Set3_Rij1_Kol2", "Set3_Rij1_Kol3", "Set3_Rij1_Kol4", "Set3_Rij1_Kol5", "Set3_Rij1_Kol6", "Set3_Rij1_Kol7", "Set3_Rij1_Kol8"],
+            ["Set3_Rij2_Kol1", "Set3_Rij2_Kol2", "Set3_Rij2_Kol3", "Set3_Rij2_Kol4", "Set3_Rij2_Kol5", "Set3_Rij2_Kol6", "Set3_Rij2_Kol7", "Set3_Rij2_Kol8"],
+            ["Set3_Rij3_Kol1", "Set3_Rij3_Kol2", "Set3_Rij3_Kol3", "Set3_Rij3_Kol4", "Set3_Rij3_Kol5", "Set3_Rij3_Kol6", "Set3_Rij3_Kol7", "Set3_Rij3_Kol8"],
+            ["Set3_Rij4_Kol1", "Set3_Rij4_Kol2", "Set3_Rij4_Kol3", "Set3_Rij4_Kol4", "Set3_Rij4_Kol5", "Set3_Rij4_Kol6", "Set3_Rij4_Kol7", "Set3_Rij4_Kol8"],
+            ["Set3_Rij5_Kol1", "Set3_Rij5_Kol2", "Set3_Rij5_Kol3", "Set3_Rij5_Kol4", "Set3_Rij5_Kol5", "Set3_Rij5_Kol6", "Set3_Rij5_Kol7", "Set3_Rij5_Kol8"],
+            ["Set3_Rij6_Kol1", "Set3_Rij6_Kol2", "Set3_Rij6_Kol3", "Set3_Rij6_Kol4", "Set3_Rij6_Kol5", "Set3_Rij6_Kol6", "Set3_Rij6_Kol7", "Set3_Rij6_Kol8"]
+        ]
+    };
+
+    function updateRegisterOverview() {
+        const sampleSet = document.getElementById('sampleSetOverview').value;
+        const tableBody = document.getElementById('registerOverviewTable').getElementsByTagName('tbody')[0];
+        tableBody.innerHTML = '';
+
+        sampleSets[sampleSet].forEach((row, rowIndex) => {
+            const tr = document.createElement('tr');
+            const rowHeader = document.createElement('td');
+            rowHeader.textContent = rowIndex + 1;
+            tr.appendChild(rowHeader);
+
+            row.forEach(cell => {
+                const td = document.createElement('td');
+                td.textContent = cell;
+                tr.appendChild(td);
+            });
+
+            tableBody.appendChild(tr);
+        });
+    }
+
+    function updateRegisterInput() {
+        const sampleSet = document.getElementById('sampleSetInput').value;
+        const tableBody = document.getElementById('registerInputTable').getElementsByTagName('tbody')[0];
+
+        tableBody.querySelectorAll('input').forEach((input, index) => {
+            const rowIndex = Math.floor(index / 8);
+            const colIndex = index % 8;
+            input.value = sampleSets[sampleSet][rowIndex][colIndex];
+        });
+    }
+
     function submitData() {
-        // Hier kan de logica worden toegevoegd om de gegevens te verzenden
         alert('Gegevens verzonden!');
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        updateRegisterOverview();
+        updateRegisterInput();
+    });
 </script>
 
 </body>
